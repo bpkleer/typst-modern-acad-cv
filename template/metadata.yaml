@@ -1,0 +1,51 @@
+colors:
+  main_color: "#579D90"
+  lightgray_color: "#d5d5d5"
+  gray_color: "#737373"
+paths: 
+  i18n: "dbs/i18n.yaml"
+  refs: "dbs/refs.yaml"
+  committee: "dbs/committee.yaml"
+  conferences: "dbs/conferences.yaml"
+  education: "dbs/education.yaml"
+  grants: "dbs/grants.yaml"
+  skills: "dbs/skills.yaml"
+  talks: "dbs/talks.yaml"
+  teaching: "dbs/teaching.yaml"
+  training: "dbs/training.yaml"
+  work: "dbs/work.yaml"
+  picture: "anonymous.png"
+personal:
+  name: ["Mustermensch, Momo"]
+  split: true
+  socials:
+    email:
+      username: momo@mustermensch.com
+      icon: paper-plane
+      set: fa
+      prefix: "mailto:"
+    homepage:
+      username: momo.github.io
+      icon: globe
+      set: fa
+      prefix: https://
+    orcid:
+      username: 0000-0000-0000-0000
+      icon: orcid
+      set: ai
+      prefix: https://orcid.org
+    lattes:
+      username: "1234567891234567"
+      icon: lattes
+      set: ai
+      prefix: http://lattes.cnpq.br/
+    github:
+      username: momo
+      icon: github
+      set: fa
+      prefix: https://github.com/
+    linkedin:
+      username: momo
+      icon: linkedin
+      set: fa
+      prefix: https://linkedin.com/in/
