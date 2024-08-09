@@ -15,20 +15,10 @@ Furthermore, I included my favorite font [Fira Sans](https://fonts.google.com/sp
 ## Usage
 
 ```typst
-#import "@preview/modern-acad-cv:0.1.0": *
-
-#show: moderner-cv.with(
-  name: "Jane Doe",
-  lang: "en",
-  social: (
-    email: "jane.doe@example.com",
-    github: "jane-doe",
-    linkedin: "jane-doe",
-  ),
-)
-
-// ...
+#import "@preview/modern-acad-cv: *
 ```
+
+*UNDER CONSTRUCTION*
 
 ## Examples
 
