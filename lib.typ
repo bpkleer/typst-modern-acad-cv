@@ -328,7 +328,7 @@
   metadata,
   myself: false,
   lang: "en",
-  font: ("Fira Sans"),
+  font: ("Fira Sans", "Andale Mono", "Roboto"),
   show-date: true,
   body
 ) = {
@@ -1154,7 +1154,6 @@
     )
  }
 }
-
 
 // Function cv-auto-stp: generates a formatted table of events based on data from a YAML file, supporting multiple languages: Title (Subtitle), location, description
 // Arguments:
