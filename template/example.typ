@@ -1,11 +1,11 @@
 // #import "modern-acad-cv.typ": *
 #import "@preview/modern-acad-cv": *
 
-#let language = "pt"   
-#let metadatapath ="metadata.yaml"
-   
 // loading meta data (needs to be ad this directory)
-#let metadata = yaml(metadatapath) 
+#let metadata = yaml("metadata.yaml") 
+
+// set the language of the document
+#let language = "pt"      
 
 // defining variables
 #let headerLabs = create-headers(metadata.paths.i18n, lang: language)
@@ -44,19 +44,19 @@
 == #headerLabs.at("pubs-peer")
 #cv-cols(
   "",
-  cv-refs(what: "refs", metadata: metadata, tag: "peer", me: [Kleer, P.], lang: language)
+  cv-refs(what: "refs", metadata: metadata, tag: "peer", me: [Mustermensch, M.], lang: language)
 )
 
 == #headerLabs.at("pubs-edited")
 #cv-cols(
   "",
-  cv-refs(what: "refs", metadata: metadata, tag: "edited", me: [Kleer, P.], lang: language)
+  cv-refs(what: "refs", metadata: metadata, tag: "edited", me: [Mustermensch, M.], lang: language)
 ) 
 
 == #headerLabs.at("pubs-book")
 #cv-cols(
   "",
-  cv-refs(what: "refs", metadata: metadata, tag: "book", me: [Kleer, P.], lang: language)
+  cv-refs(what: "refs", metadata: metadata, tag: "book", me: [Mustermensch, M.], lang: language)
 ) 
 
 == #headerLabs.at("pubs-reports")
