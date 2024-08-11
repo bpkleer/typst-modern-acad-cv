@@ -5,6 +5,7 @@ Mustermensch2023:
   title: "Populism and Social Media: A Comparative Study of Political Mobilization"
   tags: "peer"
   author: [ "Mustermensch, Momo", "Rivera, Casey" ]
+  corresponding: true
   parent:
     title: "Journal of Political Communication"
     volume: 41
