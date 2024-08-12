@@ -168,7 +168,7 @@ let cv-refs(
 )
 ```
 
-You see in the example that I used this function to built five different subheaders, i.e. for peer reviewed articles and chapters in edited books. Both functions are wrapped within `cv-cols` to adhere to the separation of columns troughout the document. 
+You see in the example pictures that I used this function to built five different subheaders, i.e. for peer reviewed articles (`tag: "peer"`) and chapters in edited books (`tag: "edited"`). You can define the tags how you want, however, they need to put them into `tag: <str>`. Both functions are wrapped within `cv-cols` to adhere to the separation of columns troughout the document. If you want full page-width for this, just remove the `cv-cols` function.
 
 ```typst
 #cv-cols(
@@ -193,6 +193,27 @@ Mustermensch2023:
   date: 2023
   page-range: 55-78
   title: "Populism and Social Media: A Comparative Study of Political Mobilization"
+  tags: "peer"
+  author: [ "Mustermensch, Momo", "Rivera, Casey" ]
+  corresponding: true
+  parent:
+    title: "Journal of Political Communication"
+    volume: 41
+    issue: 3
+  serial-number:
+    doi: "10.1016/j.jpolcom.2023.102865"
+```
+
+For applications abroad, it might be worth to translate at least title of the publications so that other persons easily can see what's the paper is about. In every `title` argument, you can therefore provide a dictionary with the language codes and the titles. Keep the original title in `main` and the translations with the language shortcut (i.e., `"de"`, `"en"`, `"pt"`). The function prints the main and translated title, depending on the provided translation in the `refs.yaml`. Be aware, here you find not `en` in the dictionary, instead you find `main`. The original title needs to be wrapped in `main`. 
+
+```yaml
+Mustermensch2023:
+  type: "article"
+  date: 2023
+  page-range: 55-78
+  title: 
+    main: "Populism and Social Media: A Comparative Study of Political Mobilization"
+    pt: "Populismo e redes sociais: Um Estudo Comparativo de Mobilização Política"
   tags: "peer"
   author: [ "Mustermensch, Momo", "Rivera, Casey" ]
   corresponding: true
@@ -261,48 +282,117 @@ You get this function with the three standard arguments `what`, `metadata`, and 
 )
 ``` 
 
-### cv-subcats-aut()
+### Print your info without any formatting
+The function `cv-auto` is the base function for printing the provided infos in the specified `yaml` file with no further formatting. The functions `cv-auto-stc` and `cv-auto-stp` do only differ in the point that `cv-auto-stc` both give the title in bold, `cv-auto-stp` puts the subtitle in parentheses and `cv-auto-stc` puts the subtitle after a comma.
 
+The structure of the corresponding `yaml` files is simple: in each entry you can have the following entries: `title`, `subtitle`, `location`, `description` and `left`. `title` is mandatory, `subtitle`, `location`, and `description` are voluntary. In all functions you need to specify `left`, which indicates period of time, or year. For `title`, `subtitle`, `location`, and `description`, you can provide a dictionary for different languages (see below). 
+
+```yaml
+master:
+  title:
+    de: Master of Arts
+    en: Master of Arts
+    pt: Pós-Graduação
+  subtitle:
+    de: Sozialwissenschaften
+    en: Social Sciences
+    pt: Ciências Sociais
+  location:
+    de: Exzellenz-Universität
+    en: University of Excellence
+    pt: Universidade de Excelência
+  description:
+    de: mit Auszeichnung
+    en: with distinction
+    pt: com distinção
+  left: "2014"
+```
+
+In your main document, you then easily call the function and transfer the standard arguments `what`, `metadata`, and `lang`. 
+
+```typst
+
+// section of education 
+#lcv-auto-stp(
+  what: "education",
+  metadata: metadata,
+  lang: "en"
+)
+
+// section of work positions
+#cv-auto-stc(
+  what: "work",
+  metadata: metadata,
+  lang: "en"
+)
+
+// section of academic committee positions
+#cv-auto(
+  what: "committee",
+  metadata: metadata, 
+  lang: language)
+```
+
+### Creating a list instead of single entrie
+Sometimes, instead of giving every entry, you want to group by year. Another example for this case could be that you want to summarize your memberships or reviewer duties. 
+
+The function `cv-auto-list` uses the standard arguments: `what`, `metadata`, and `lang`.
+
+```typst
+#cv-auto-list(
+  what: "conferences", 
+  metadata: metadata, 
+  lang: language
+)
+```
+The corresponding `yaml` file is differently organized: The entry point in the file is the corresponding year. In every year, you organize your entries (i.e. conference participations). In each entry in a year, you have the `name` and `action` entry. You can provide a dictionary for the `name`. For `action`, I used `P` and `C`, for *paper/presentation* and *chair*. You can then manually define this upfront the function call for the reader, or you use the `i18n.yaml`, indicate the explanations for each language in `exp-confs` and then it automatically changes with the specific language code.
+  
+```yaml
+"2024":
+  conference2:
+    name: European Conference on Gender and Politics
+    action: P
+  conference1:
+    name: ECPR General Conference
+    action: P, C
+```
+
+The action will be added after each conference name in superscripts.
+
+### Creating a table
+This case is mostly used for listing your prior teaching experience. The corresponding `teaching.yaml` for this description, is organized as followed:
+
+```yaml
+"2024":
+  course1:
+    summer: T
+    name:
+      de: "Statistik+: Einstieg in R leicht gemacht"
+      en: "Statistics+: Starting with R (de)"
+      pt: "Estatística+: Começando com R (de)"
+    study:
+      de: Bachelor
+      en: Bachelor
+      pt: Graduação
+  ...
+```
+
+First you indicate the year `"2024"` and then you organize all courses you gave within that year (i.e. here `course1`). Mandatory are `name` and `study`. For both you can indicate a single value or a dictionary corresponding to your chosen languages. You can provide `summer` if you want to indicate differences for terms. This is `boolean`, the specific word is then given in the `i18n.yaml` under `table-winter` resp. `table-summer`.
+
+The function then uses again just the standard arguments and plots a table with the indicated year, name, and study area. 
+
+```typst
+#cv-table-teaching(
+  what: "teaching", 
+  metadata: metadata, 
+  lang: language
+)
+```
+
+### cv-subcats-aut()
 - cv-subcats-aut(
   what: "",
   metadata: (:),   
-  lang: "de"
-)
-
-
-
-### cv-auto-stc()
-- #let cv-auto-stc(
-  what: "",
-  metadata: (:),    
-  lang: "de" 
-)
-
-### cv-auto-stp()
--#let cv-auto-stp(
-  what: "", 
-  metadata: (:),    
-  lang: ""
-)
-
-### cv-auto-table()
-- #let cv-auto-table(
-  what: "", 
-  metadata: (:),          
-  lang: ""  
-)
-
-### cv-auto-list()
-- #let cv-auto-list(
-  what: "",
-  metadata: (:),        
-  lang: "de"   
-)
-
-### cv-auto()
--#let cv-auto(
-  what: "",
-  metadata: (:),
   lang: "de"
 )
 
