@@ -1,5 +1,5 @@
 // #import "modern-acad-cv.typ": *
-#import "@preview/modern-acad-cv": *
+#import "@preview/modern-acad-cv:0.1.0": *
 
 // loading meta data (needs to be ad this directory)
 #let metadata = yaml("metadata.yaml") 
@@ -103,7 +103,7 @@
 
 == #headerLabs.at("teaching-courses")
 
-#cv-auto-table(what: "teaching", metadata: metadata, lang: language)
+#cv-table-teaching(what: "teaching", metadata: metadata, lang: language)
 
 = #headerLabs.at("training")
 
