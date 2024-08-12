@@ -1044,7 +1044,7 @@
     let entry = title
 
     if "subtitle" in subset.keys() {
-      entry += [, #emph(subtitle)]
+      entry += [, #subtitle]
     }
 
     if "location" in subset.keys() {
@@ -1252,7 +1252,7 @@
 // - what: which subfile wanted to plot
 // - metadata: yaml file with paths
 // - lang: language code for fetching language-specific text from the YAML data.
-#let cv-auto-table(
+#let cv-table-teaching(
   what: "", 
   metadata: (:),          
   lang: ""  
@@ -1289,10 +1289,14 @@
       for language in multilingual.lang.keys() {
         if lang == language {
           // Determine the term (summer/winter) and corresponding header
-          if subset2.summer == "T" {
-            term = [#multilingual.lang.at(lang).table-summer #year]
+          if "summer" in subset2.keys() {
+            if subset2.summer == "T" {
+              term = [#multilingual.lang.at(lang).table-summer #year]
+            } else {
+              term = [#multilingual.lang.at(lang).table-winter #year]
+            }
           } else {
-            term = [#multilingual.lang.at(lang).table-winter #year]
+            [#year]
           }
           
           // Get the name and study details based on the selected language
