@@ -431,13 +431,13 @@
   return headLabs
 }
 
-// Function cv-subcats-aut: This function processes and formats a dictionary of training or course information based on the specified language. The function retrieves and formats various fields such as title, subtitle, date, location, and description, and outputs them in a structured format.
+// Function cv-auto-cats: This function processes and formats a dictionary of training or course information based on the specified language. The function retrieves and formats various fields such as title, subtitle, date, location, and description, and outputs them in a structured format.
 // Arguments:
 // - what: which subfile wanted to plot
 // - metadata: yaml file with paths
 // - language: A string representing the language code (e.g., "de" for German). This determines which language-specific fields to display. Defaults to "de".
 
-#let cv-subcats-aut(
+#let cv-auto-cats(
   what: "",
   metadata: (:),   
   lang: "de"
@@ -576,7 +576,7 @@
         )
       } 
       else if ("subtitle") in subset2.keys() {
-        elements = [#strong(title) (#subtitle1)]  // Bold title with subtitle only.
+        elements = [#strong(title) (#subtitle)]  // Bold title with subtitle only.
 
         // Output the formatted content with date and elements.
         cv-cols(
@@ -1246,7 +1246,7 @@
   }
 
 
-// Function cv-auto-table: generates a table of events based on data from a YAML file and multilingual labels. It processes the events to include details such as the term (summer/winter), name, and study information. The function constructs a table with headers and details for each event, displaying them in the specified language.
+// Function cv-table-teaching: generates a table of events based on data from a YAML file and multilingual labels. It processes the events to include details such as the term (summer/winter), name, and study information. The function constructs a table with headers and details for each event, displaying them in the specified language.
 // see example dbs/teaching.toml
 // Arguments:
 // - what: which subfile wanted to plot
