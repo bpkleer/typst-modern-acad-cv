@@ -1,4 +1,4 @@
-# moderner-acad-cv
+# modern-acad-cv
 
 This template for an academic CV serves the peculiarities of academic CVs. If you are not an academic, this template is not useful. Most of the times in academics, applicants need to show everything they have done. This makes it a bit cumbersome doing it by single entries. In addition, academics might apply to institutions around the globe, making it necessary to send translated CVs or at least translations of some parts (i.e., title of papers in different languages). 
 
@@ -158,9 +158,9 @@ paths:
 Since `typst` so far does not support multiple bibliographies or subsetting these, this function let you choose specific entries via the `entries` argument or group of entries by the `tag` argument. Furthermore, you can indicate a string in `me` that can be highlighted in every output entry (i.e., your formatted name). So far, this function leads to another function that create APA-style format, if you want to use any other, you need to download the template on [github](https://github.com/bpkleer/modern-acad-cv), introduce your own styling and then add it in the `cv-refs()` function. 
 
 ```typst
-let cv-refs(
-  what: "",
-  metadata: (:),  
+#cv-refs(
+  what: "refs",
+  metadata: metadata,  
   entries: (), 
   tag: none,
   me: none,
@@ -383,20 +383,58 @@ The function then uses again just the standard arguments and plots a table with 
 
 ```typst
 #cv-table-teaching(
+  what: "training", 
+  metadata: metadata, 
+  lang: language
+)
+```
+
+An example is given in `training.yaml`. In this file, further training is given by categories (i.e., methods and didactics). Within the categories you have here courses and then `title`, `location`, and `left`. `location` and `title` can be dictionaries if you want to translate between different languages. 
+
+```yaml
+methods:
+  course2:
+    title: Bayesian modelling in the Social Sciences
+    location: An expensive Spring Seminar
+    left: "2024"
+  ...
+didactics:
+  course2:
+    title:
+      de: Konfliktkompetenz I + II
+      en: Conflict competence I + II
+      pt: Competência de conflitos I + II
+    location: 
+      de: Universitätsallianz
+      en: University Alliance
+      pt: Aliança Universitária
+    left: "2019"
+```
+
+### cv-auto-cats()
+In case you want to directly print entries from categories that belong to one `yaml`-file, you can use `cv-auto-cats`. This will print the header for each subcategory and then the belonging entries. Again, the arguments are just `what`, `metadata`, and `lang`. 
+
+```typst
+#cv-auto-cats(
   what: "teaching", 
   metadata: metadata, 
   lang: language
 )
 ```
 
-### cv-subcats-aut()
-- cv-subcats-aut(
-  what: "",
-  metadata: (:),   
-  lang: "de"
-)
-
 ### Special cases: long names
+If you have a long name that crosses the social media side, just set the argument `split` to `true` within `modern-acad-cv`:
+
+```typst
+#show: modern-acad-cv.with(
+  metadata, 
+  myself: true, 
+  lang: "en",  
+  split: true, 
+  font: "Fira Sans", 
+  show-date: true
+)   
+```
 
 ## Examples
 
