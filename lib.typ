@@ -111,16 +111,16 @@
 // Function _header macro: Creating the header
 // Arguments:
 // - metadata: the metadata object containing paths and personal information (Type: Object)
-// - foto: a boolean indicating whether to include the personal image (Type: Boolean, default: false)
+// - multilingual: object with multilingual entries
 // - language: a string indicating the language to use for the subtitle (Type: String, default: "de")
 
 #let _header(
   metadata,
-  foto: false,
+  multilingual,
   language: "de",
 ) = {
   // Load multilingual data from a YAML file
-  let multilingual = yaml(metadata.paths.i18n)
+  // let multilingual = yaml(metadata.paths.i18n)
   let main_color = rgb(metadata.colors.main_color)
   let lightgray_color = rgb(metadata.colors.lightgray_color)
   let gray_color = rgb(metadata.colors.gray_color)
@@ -238,46 +238,32 @@
     ..socialist
   )
 
-  // Render different layouts based on the value of foto
-  if foto [
-    #stack(
-      dir: ltr,
-      titleStack,
-      align(
-        right + top,
-        socialBlock,
-      ),
-      spacing: 1em,
-      align(
-        top,
-        image(metadata.paths.picture, width: 15%)
-      )
+  // Title and social stack
+  stack(
+    dir: ltr,
+    titleStack,
+    align(
+      right + top,
+      socialBlock,
     )
-  ] else [
-    #stack(
-      dir: ltr,
-      titleStack,
-      align(
-        right + top,
-        socialBlock,
-      )
-    )
-  ]
+  )
 }
 
 // New functions
 // Function _adresser: function to build name and date at the end
 // Arguments:
 // - metadata: The metadata object containing paths and personal information (Type: Object)
+// - multilingual: object with multilingual entries
 // - language: A string indicating the language to use for the date format (Type: String, default: "de")
 
 #let _adresser(
   metadata,
+  multilingual,
   language: "de"
 ) = {
 
   // Load the multilingual YAML file specified in the metadata paths
-  let multilingual = yaml(metadata.paths.i18n)
+  // let multilingual = yaml(metadata.paths.i18n)
 
   // Create a vertical stack with the personal name and date
   v(1fr, weak: false)
@@ -318,7 +304,7 @@
 // Function modern-acad-cv: initiate CV
 // Arguments:
 // - metadata: the metadata object containing paths and personal information (Type: Object)
-// - myself: a boolean indicating whether to include the personal image (Type: Boolean, default: false)
+// - multilingual: object with multilingual entries
 // - lang: a string indicating the language to use for the document (Type: String, default: "en")
 // - font: the font to be used for the document (Type: String, default: "Fira Sans")
 // - show-date: a boolean indicating whether to display the current date (Type: Boolean, default: true)
@@ -326,7 +312,7 @@
 
 #let modern-acad-cv(
   metadata,
-  myself: false,
+  multilingual,
   lang: "en",
   font: ("Fira Sans", "Andale Mono", "Roboto"),
   show-date: true,
@@ -390,28 +376,28 @@
     )
   }
 
-  // Call the _header with metadata, myself, and lang
-  _header(metadata, foto: myself, language: lang)
+  // Call the _header with metadata, and lang
+  _header(metadata, multilingual, language: lang)
 
   // Insert the body content
   body
 
   // Show the current date if show-date is true
   if show-date {
-    _adresser(metadata, language: lang)
+    _adresser(metadata, multilingual, language: lang)
   }
 }
 
 // Function create-headers: Creating headers depending on language across the CV
 // Arguments:
-// - file: path to i18n.yaml
+// - multilingual: object with multilingual entries
 // - language: string, language code
 #let create-headers(
-  file,
+  multilingual,
   lang: "de",
 ) = {
   // Load the multilingual YAML data
-  let multilingual = yaml(file)
+  // let multilingual = yaml(file)
 
   // Initialize an empty dictionary to store header labels
   let headLabs = (:)
@@ -433,13 +419,14 @@
 
 // Function cv-auto-cats: This function processes and formats a dictionary of training or course information based on the specified language. The function retrieves and formats various fields such as title, subtitle, date, location, and description, and outputs them in a structured format.
 // Arguments:
-// - what: which subfile wanted to plot
-// - metadata: yaml file with paths
+// - what: object with data
+// - multilingual: object with multilingual entries
 // - language: A string representing the language code (e.g., "de" for German). This determines which language-specific fields to display. Defaults to "de".
 
 #let cv-auto-cats(
-  what: "",
-  metadata: (:),   
+  what,
+  multilingual,   
+  headers,
   lang: "de"
 ) = {
 
@@ -450,13 +437,10 @@
   let location = ""      // Variable to hold the location of each course
   let description = ""   // Variable to hold the description of each course
   let index = 0          // Index to track the current key in the dictionary
-  let dictionary = yaml(metadata.paths.at(what)) // initilias dictionary
-
-  // Load multilingual data from a YAML file for localization.
-  let multilingual = yaml(metadata.paths.i18n)
+  let dictionary = what // initilias dictionary
 
   // Create a headers dictionary based on the specified language, used for translating category names.
-  let headers = create-headers(metadata.paths.i18n, lang: lang)
+  // let headers = create-headers(metadata.paths.i18n, lang: lang)
 
   // Function to retrieve a language-specific field from a dictionary.
   // Arguments:
@@ -595,18 +579,15 @@
 // Function make-entry-apa: Creates a formatted reference string for an entry in APA style.  This function uses internationalization (i18n) data and fields from the cv-refs function to generate the reference. The function supports customization based on the author's name and language.
 // Arguments:
 // - fields: A dictionary containing details of a single reference entry (e.g., authors, title, publication date).
-// - metadata: a dictionary containing the paths to objects.
+// - multilingual: object with multilingual entries
 // - me: An optional string representing the author's name that should be highlighted in the final reference string.
 // - lang: A string indicating the language of the CV or document (e.g., "en" for English). Defaults to "en".
 #let make-entry-apa(
   fields,
-  metadata,
+  multilingual,
   me: none, 
   lang: "en"
 ) = {
-
-  // Load multilingual strings from a YAML file for internationalization support.
-  let multilingual = yaml(metadata.paths.i18n)
 
   // Extract the list of authors from the fields.
   let authors = fields.author
@@ -863,16 +844,16 @@
 // can highlight own name
 // can use given translations of title in i18n.yaml, if submitting CV in different language
 // Arguments
-// - what: which subfile wanted to plot
-// - metadata: yaml file with paths
+// - what: object with data
+// - multilingual: object with multilingual entries
 // - entries: An array of strings, representing the specific entries to include in the output. Defaults to an empty list (), which will include all entries in the file.
 // - tag: An optional string. If provided, only entries with this tag will be included. Defaults to none.
 // - me: An optional string, likely representing the name of the author. Used for personalized output (name will be bold). Defaults to none.
 // - lang: A string specifying the language to be used in the references (e.g., "de" for German). If CV is in different language than title-main, translations will be add to the reference (translations need to be given in i18n.yaml) Defaults to "de".
 
 #let cv-refs(
-  what: "",
-  metadata: (:),  
+  what,
+  multilingual,  
   entries: (), 
   tag: none,
   me: none,
@@ -891,13 +872,12 @@
   // Set spacing above each block of text.
   set block(above: 10pt)
   
+  // create object
+  let dictionary = what
   // If `entries` is empty, populate it with all keys from the YAML file.
   if entries.len() == 0 {
-    entries = yaml(metadata.paths.at(what)).keys()
+    entries = dictionary.keys()
   }
-
-  // Load internationalization (i18n) strings from a predefined YAML file in `metadata.paths.i18n`.
-  let i18n = yaml(metadata.paths.i18n)
 
   // Initialize counters for different types of publications.
   let articles = 0
@@ -907,7 +887,7 @@
   let planned = 0
 
   // Loop through each entry in the YAML file to count the types of publications.
-  for (entry, field) in yaml(metadata.paths.at(what)) {
+  for (entry, field) in dictionary {
     if field.tags == "planned" {
       planned += 1
     } else if field.type == "article" {
@@ -922,7 +902,7 @@
   }
 
   // Loop through each entry in the YAML file to generate the reference list.
-  for (entry, fields) in yaml(metadata.paths.at(what)) {
+  for (entry, fields) in dictionary {
     
     // Skip entries not specified in entries if entries are specified.
     if entry not in entries {
@@ -956,8 +936,8 @@
 
     // Generate the reference entry using a custom function `make-entry-apa`.
     // This function formats the reference according to APA style.
-    // Parameters passed are the `fields` (details of the entry), `metadata` (metadata with paths), `me` (author name), and `lang` (language).
-    make-entry-apa(fields, metadata, me: me, lang: lang)
+    // Parameters passed are the `fields` (details of the entry), `multilingual` (multilingual object), `me` (author name), and `lang` (language).
+    make-entry-apa(fields, multilingual, me: me, lang: lang)
   }
 }
 
@@ -965,12 +945,12 @@
 // see example dbs/committee.toml
 // no extra formatting
 // Arguments:
-// - what: which subfile wanted to plot
-// - metadata: yaml file with paths
+// - what: object with data
+// - multilingual: object with multilingual entries
 // - lang: language of cv
 #let cv-auto(
-  what: "",
-  metadata: (:),
+  what,
+  multilingual,
   lang: "de"
 ) = {
   // let date = ""
@@ -979,8 +959,7 @@
   // let location = ""
   // let description = ""
   let subset = (:)  // // Initialize the subset dict
-  let dictionary = yaml(metadata.paths.at(what)) // setting input
-  let multilingual = yaml(metadata.paths.i18n) // setting language support
+  let dictionary = what // setting input
 
   // Iterate over each key in the database
   for key in dictionary.keys() {
@@ -1064,12 +1043,12 @@
 
 // Function cv-auto-stc: formats and generates a list of events based on data from a YAML file and multilingual labels. Format TItle, Subtitle, Location, Description
 // Arguments:
-// - what: which subfile wanted to plot
-// - metadata: yaml file with paths
+// - what: object containing the information
+// - multilingual: object with multilingual entries
 // - lang: Language code to fetch language-specific text from the YAML data.
 #let cv-auto-stc(
-  what: "",
-  metadata: (:),    
+  what,
+  multilingual,    
   lang: "de" 
 ) = {
   let date = ""          // Date of the event.
@@ -1078,8 +1057,9 @@
   let check = ""         // Unused variable, potentially for future checks or operations.
   let location = ""      // Location of the event (if available).
   let description = ""   // Description of the event (if available).
-  let multilingual = yaml(metadata.paths.i18n) // Load multilingual data.
-  let dictionary = yaml(metadata.paths.at(what)) // Load event data from the YAML file.
+  // let multilingual = yaml(metadata.paths.i18n) // Load multilingual data.
+  let dictionary = what
+  // let dictionary = yaml(metadata.paths.at(what)) // Load event data from the YAML file.
 
   // Initialize an index for language iteration
   let index = 0
@@ -1157,12 +1137,12 @@
 
 // Function cv-auto-stp: generates a formatted table of events based on data from a YAML file, supporting multiple languages: Title (Subtitle), location, description
 // Arguments:
-// - what: which subfile wanted to plot
-// - metadata: yaml file with paths
+// - what: object containing the information
+// - multilingual: object with multilingual entries
 // - lang: The language code to use for fetching language-specific text from the YAML data (default is "de").
 #let cv-auto-stp(
-  what: "", 
-  metadata: (:),    
+  what, 
+  multilingual,    
   lang: ""
 ) = {
     // Initialize variables
@@ -1171,8 +1151,7 @@
     let subtitle = ""      // Subtitle of the event (if available).
     let location = ""      // Location of the event.
     let description = ""   // Description of the event (if available).
-    let dictionary = yaml(metadata.paths.at(what)) // Load event data from the YAML file.
-    let multilingual = yaml(metadata.paths.i18n) // Load multilingual data.
+    let dictionary = what // Load event data from the YAML file.
     let index = 0          // Index for iterating through languages.
 
     // Iterate over the keys (events) in the dictionary
@@ -1249,12 +1228,12 @@
 // Function cv-table-teaching: generates a table of events based on data from a YAML file and multilingual labels. It processes the events to include details such as the term (summer/winter), name, and study information. The function constructs a table with headers and details for each event, displaying them in the specified language.
 // see example dbs/teaching.toml
 // Arguments:
-// - what: which subfile wanted to plot
-// - metadata: yaml file with paths
+// - what: object with data
+// - multilingual: object with multilingual entries
 // - lang: language code for fetching language-specific text from the YAML data.
 #let cv-table-teaching(
-  what: "", 
-  metadata: (:),          
+  what, 
+  multilingual,          
   lang: ""  
 ) = {
   // Initialize variables
@@ -1270,8 +1249,7 @@
   let tab-study = ""                // Header for the study column in the table.
   let tab-note = ""                 // Header for the note column in the table.
   let index = 0                     // Index for iterating through dictionary entries.
-  let dictionary = yaml(metadata.paths.at(what))       // Load event data from the YAML file.
-  let multilingual = yaml(metadata.paths.i18n) // Load multilingual labels from YAML.
+  let dictionary = what    // Load event data from the YAML file.
 
   // Iterate over the keys (years) in the dictionary
   for key in dictionary.keys() {
@@ -1355,12 +1333,12 @@
 
 // Function cv-auto-list: generates a list of events for each year based on data from a YAML file. It formats the events into a concatenated string that includes the name and action of each event, and displays this information alongside the respective year.
 // Arguments:
-// - what: which subfile wanted to plot
-// - metadata: yaml file with paths
+// - what: object with data
+// - multilingual: object with multilingual entries
 // - lang: Language code for fetching language-specific text from the YAML data.
 #let cv-auto-list(
-  what: "",
-  metadata: (:),        
+  what,
+  multilingual,        
   lang: "de"   
 ) = {
   // Initialize variables
@@ -1369,8 +1347,7 @@
   let year = ""       // Year extracted from the YAML data.
   let subset = ""     // Subset of events for the current year.
   let index = 0       // Index for iterating through dictionary keys.
-  let dictionary = yaml(metadata.paths.at(what)) // Load event data from the YAML file.
-  let multilingual = yaml(metadata.paths.i18n)
+  let dictionary = what // Load event data from the YAML file.
 
   // Iterate over the keys (years) in the dictionary
   for key in dictionary.keys() {
@@ -1421,12 +1398,13 @@
 // Function cv-auto-skill: generates a table of skills based on data from a YAML file and multilingual labels. It processes skills data to categorize them into "computer," "programs," and "languages" sections, and generates a table with this information. The skill levels are represented with icons.
 // see example dbs/skills.toml
 // Arguments:
-// - what: which subfile wanted to plot
-// - metadata: yaml file with paths
+// - what: object with data
+// - multilingual: object with multilingual entries
 // - lang:  language of cv; the language code to use for fetching language-specific fields from the YAML data.
 #let cv-auto-skills(
-  what: "",
-  metadata: (:),          
+  what,
+  multilingual,      
+  metadata,    
   lang: "de"    
 ) = {
   // Initialize variables
@@ -1440,8 +1418,7 @@
   let level = 0                     // Skill level.
   let level-text = ""               // Text representation of the skill level icons.
   let description = ""              // Skill description.
-  let dictionary = yaml(metadata.paths.at(what))       // Load skill data from the YAML file.
-  let multilingual = yaml(metadata.paths.i18n) // Load multilingual labels from YAML.
+  let dictionary = what   // Load skill data from the YAML file.
   let main_color = rgb(metadata.colors.main_color)
   let gray_color = rgb(metadata.colors.gray_color)
   let lightgray_color = rgb(metadata.colors.lightgray_color)

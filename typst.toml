@@ -1,7 +1,7 @@
 [package]
 name = "modern-acad-cv"
 version = "0.1.0"
-compiler = "0.11.1"
+compiler = "0.11.0"
 entrypoint = "lib.typ"
 authors = ["bpkleer (Philipp Kleer) <philipp.kleer@posteo.com>"]
 license = "MIT"
@@ -15,4 +15,4 @@ repository = "https://github.com/pavelzw/modern-acad-cv"
 [template]
 path = "template"
 entrypoint = "example.typ"
-thumbnail = "assets/example.png"
+thumbnail = "assets/example1.png"
