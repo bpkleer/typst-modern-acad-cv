@@ -1,7 +1,7 @@
 // #import "modern-acad-cv.typ": *
 #import "@local/modern-acad-cv:0.1.0": *
 
-// loading meta data (needs to be ad this directory)
+// loading meta data and databases (needs to be ad this directory)
 #let metadata = yaml("metadata.yaml") 
 #let multilingual = yaml("dbs/i18n.yaml")
 #let work = yaml("dbs/work.yaml")
@@ -53,34 +53,19 @@
 )  
 
 == #headerLabs.at("pubs-peer")
-#cv-cols(
-  "",
-  cv-refs(refs, multilingual, tag: "peer", me: [Mustermensch, M.], lang: language)
-)
+#cv-refs(refs, multilingual, tag: "peer", me: [Mustermensch, M.], lang: language)
 
 == #headerLabs.at("pubs-edited")
-#cv-cols(
-  "",
-  cv-refs(refs, multilingual, tag: "edited", me: [Mustermensch, M.], lang: language)
-) 
+#cv-refs(refs, multilingual, tag: "edited", me: [Mustermensch, M.], lang: language)
 
 == #headerLabs.at("pubs-book")
-#cv-cols(
-  "",
-  cv-refs(refs, multilingual, tag: "book", me: [Mustermensch, M.], lang: language)
-) 
+#cv-refs(refs, multilingual, tag: "book", me: [Mustermensch, M.], lang: language)
 
 == #headerLabs.at("pubs-reports")
-#cv-cols(
-  "",
-  cv-refs(refs, multilingual, tag: "other", me: [Kleer, P.], lang: language)
-)
+#cv-refs(refs, multilingual, tag: "other", me: [Mustermensch, M.], lang: language)
 
 == #headerLabs.at("pubs-upcoming")
-#cv-cols(
-  "",
-  cv-refs(refs, multilingual, tag: "planned", me: [Kleer, P.], lang: language) 
-)
+#cv-refs(refs, multilingual, tag: "planned", me: [Mustermensch, M.], lang: language) 
 
 = #headerLabs.at("confs") 
 == #headerLabs.at("confs-conf")
