@@ -358,7 +358,7 @@
   show heading: it => {
     set text(weight: "regular")
     set text(main_color)
-    set block(above: 0pt)
+    set block(above: 0.65em)
     _cv-cols(
       [],
       [#it.body],
@@ -870,7 +870,7 @@
   )
   
   // Set spacing above each block of text.
-  set block(above: 10pt)
+   set block(above: 0.65em)
   
   // create object
   let dictionary = what
