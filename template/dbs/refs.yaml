@@ -2,7 +2,10 @@ Mustermensch2023:
   type: "article"
   date: 2023
   page-range: 55-78
-  title: "Populism and Social Media: A Comparative Study of Political Mobilization"
+  title: 
+    main: "Populismus und soziale Medien: Eine vergleichende Studie zur politischen Mobilisierung"
+    en: "Populism and Social Media: A Comparative Study of Political Mobilization"
+    pt: "Populismo e redes sociais: Um Estudo Comparativo de Mobilização Política"
   tags: "peer"
   author: [ "Mustermensch, Momo", "Rivera, Casey" ]
   corresponding: true
