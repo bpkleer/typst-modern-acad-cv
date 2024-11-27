@@ -1,5 +1,5 @@
 // import fontawesome & academicons
-#import "@preview/fontawesome:0.4.0": *
+#import "@preview/fontawesome:0.5.0": *
 #import "@preview/use-academicons:0.1.0": *
 
 // Functions from moderner-cv with changes
@@ -86,8 +86,8 @@
 
 #let cv-two-items(left-1, right-1, left-2, right-2) = {
   
-  // Set the block style with no spacing below and 10em spacing between items
-  set block(below: 0pt, spacing: 10em)
+  // Set the block style with no spacing below and 1em spacing between items
+  set block(below: 0pt, spacing: 1em)
   
   // Create a table with specified column widths and no border strokes
   table(
@@ -337,7 +337,7 @@
       )
       [
         // Display the current page number in the format "1/1"
-        #counter(page).display("1/1", both: true)
+        #context {counter(page).display("1/1", both: true)}
       ]
     ],
     footer-descent: 0pt,
